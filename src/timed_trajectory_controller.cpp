@@ -400,7 +400,7 @@ void TimedTrajectoryController::update()
 				  dt.toSec());
     }
     else {
-      effort = pids_[i].computeCommand(error[i], v_error[i], dt);
+      effort = pids_[i].updatePid(error[i], v_error[i], dt);
 
       double effort_unfiltered = effort;
       if (output_filters_[i])
@@ -495,7 +495,6 @@ void TimedTrajectoryController::update()
       }
       controller_state_publisher_->unlockAndPublish();
     }
-   
   }
 
   // Time publishing
