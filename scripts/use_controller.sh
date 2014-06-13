@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -x
+
+rosrun pr2_controller_manager pr2_controller_manager stop l_arm_controller
+rosrun pr2_controller_manager pr2_controller_manager unload l_arm_controller
+rosparam set l_arm_controller/type timed_trajectory_controller/TimedTrajectoryController
+rosrun pr2_controller_manager pr2_controller_manager load l_arm_controller
+rosrun pr2_controller_manager pr2_controller_manager start l_arm_controller
+
+rosrun pr2_controller_manager pr2_controller_manager stop r_arm_controller
+rosrun pr2_controller_manager pr2_controller_manager unload r_arm_controller
+rosparam set r_arm_controller/type timed_trajectory_controller/TimedTrajectoryController
+rosrun pr2_controller_manager pr2_controller_manager load r_arm_controller
+rosrun pr2_controller_manager pr2_controller_manager start r_arm_controller

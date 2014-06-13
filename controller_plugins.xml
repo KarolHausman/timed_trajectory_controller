@@ -1,0 +1,5 @@
+<library path="lib/libtimed_trajectory_controller">
+  <class name="timed_trajectory_controller/TimedTrajectoryController"
+         type="controller::TimedTrajectoryController"
+         base_class_type="pr2_controller_interface::Controller"/>
+</library>
