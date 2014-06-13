@@ -1,28 +1,34 @@
-cmake_minimum_required(VERSION 2.8.3)
-project(timed_trajectory_controller)
+cmake_minimum_required(VERSION 2.4.6)
+include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 
-# Load catkin and all dependencies required for this package
-find_package(catkin REQUIRED COMPONENTS cmake_modules pr2_controllers_msgs pr2_controller_interface pr2_mechanism_model roscpp control_toolbox control_msgs filters realtime_tools pluginlib)
+# Set the build type.  Options are:
+#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
+#  Debug          : w/ debug symbols, w/o optimization
+#  Release        : w/o debug symbols, w/ optimization
+#  RelWithDebInfo : w/ debug symbols, w/ optimization
+#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
+#set(ROS_BUILD_TYPE RelWithDebInfo)
 
+rosbuild_init()
 
-include_directories(include ${Boost_INCLUDE_DIR} ${catkin_INCLUDE_DIRS})
-add_library(${PROJECT_NAME} src/timed_trajectory_controller.cpp)
-target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES})
+#set the default path for built executables to the "bin" directory
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+#set the default path for built libraries to the "lib" directory
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
-# Declare catkin package
-catkin_package(
-  CATKIN_DEPENDS cmake_modules pr2_controllers_msgs pr2_controller_interface pr2_mechanism_model roscpp control_toolbox control_msgs filters realtime_tools pluginlib
-  INCLUDE_DIRS include
-  LIBRARIES ${PROJECT_NAME}
+#uncomment if you have defined messages
+#rosbuild_genmsg()
+#uncomment if you have defined services
+#rosbuild_gensrv()
+
+#common commands for building c++ executables and libraries
+#rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
+#target_link_libraries(${PROJECT_NAME} another_library)
+#rosbuild_add_boost_directories()
+#rosbuild_link_boost(${PROJECT_NAME} thread)
+#rosbuild_add_executable(example examples/example.cpp)
+#target_link_libraries(example ${PROJECT_NAME})
+
+rosbuild_add_library(timed_trajectory_controller
+  src/timed_trajectory_controller.cpp
   )
-
-install(TARGETS timed_trajectory_controller
-   RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
-   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
-
-install(DIRECTORY include/${PROJECT_NAME}/
-   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
-
-install(FILES controller_plugins.xml
-   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION})

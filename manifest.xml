@@ -1,0 +1,27 @@
+<package>
+  <description brief="timed_trajectory_controller">
+
+     timed_trajectory_controller
+
+  </description>
+  <author>bhaskara</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/timed_trajectory_controller</url>
+  <depend package="pr2_controllers_msgs"/>
+  <depend package="pr2_controller_interface"/>
+  <depend package="pr2_mechanism_model"/>
+  <depend package="pluginlib"/>
+  <depend package="filters"/>
+  <depend package="realtime_tools"/>
+  <depend package="control_toolbox"/>
+  <depend package="control_msgs"/>
+
+  <export>
+    <cpp cflags="-I${prefix}/include -I${prefix}/msg/cpp -I${prefix}/srv/cpp"
+	 lflags="-Wl,-rpath,${prefix}/lib/ -L${prefix}/lib -ltimed_trajectory_controller" />
+    <pr2_controller_interface plugin="${prefix}/controller_plugins.xml" />
+  </export>
+</package>
+
+

@@ -37,8 +37,7 @@
 #include "angles/angles.h"
 #include "pluginlib/class_list_macros.h"
 
-//PLUGINLIB_EXPORT_CLASS( controller::TimedTrajectoryController, pr2_controller_interface::Controller)
-PLUGINLIB_EXPORT_CLASS( controller::TimedTrajectoryController, pr2_controller_interface::Controller)
+PLUGINLIB_DECLARE_CLASS(timed_trajectory_controller, TimedTrajectoryController, controller::TimedTrajectoryController, pr2_controller_interface::Controller)
 
 namespace controller {
 
