@@ -406,6 +406,13 @@ void TimedTrajectoryController::update()
       if (output_filters_[i])
 	output_filters_[i]->update(effort_unfiltered, effort);
     }
+    if (proxies_[i].effort_limit_ > 0.0)
+      {
+	//std::cout << "EFFORT LIMIT: " << proxies_[i].effort_limit_ << " FOR JOINT NUMBER: " << i << std::endl;
+	effort = std::max(-proxies_[i].effort_limit_, std::min(effort, proxies_[i].effort_limit_));
+	if (effort >= proxies_[i].effort_limit_)
+	  std::cout << "Effort Excided!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+      }
 
     // Apply the effort.  WHY IS THIS ADDITIVE?
     joints_[i]->commanded_effort_ = effort;
