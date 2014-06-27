@@ -423,6 +423,15 @@ void TimedTrajectoryController::update()
           bool effort_exceeded = true;
           effort_pub_->msg_.data = effort_exceeded;
           effort_pub_->unlockAndPublish();
+
+          if (traj[seg].gh)
+            traj[seg].gh->setAborted();
+          else if (traj[seg].gh_follow) {
+            traj[seg].gh_follow->preallocated_result_->error_code =
+              control_msgs::FollowJointTrajectoryResult::PATH_TOLERANCE_VIOLATED;
+            traj[seg].gh_follow->setAborted(traj[seg].gh_follow->preallocated_result_);
+          }
+          break;
           
 	        std::cout << "Effort Exceeded!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
           }
