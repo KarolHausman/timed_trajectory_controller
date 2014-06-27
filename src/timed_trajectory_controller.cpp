@@ -415,27 +415,19 @@ void TimedTrajectoryController::update()
 
     }
 
-    if (proxies_[i].effort_limit_ > 0.0)
-      {
-	      effort = std::max(-proxies_[i].effort_limit_, std::min(effort, proxies_[i].effort_limit_));
-	      if (effort >= proxies_[i].effort_limit_)
+    if (i  == 0)
+    {
+	  effort = std::max(-proxies_[i].effort_limit_, std::min(effort, proxies_[i].effort_limit_));
+	  if ((effort == proxies_[i].effort_limit_) || (effort == -proxies_[i].effort_limit_))
           {
           bool effort_exceeded = true;
           effort_pub_->msg_.data = effort_exceeded;
           effort_pub_->unlockAndPublish();
 
-          if (traj[seg].gh)
-            traj[seg].gh->setAborted();
-          else if (traj[seg].gh_follow) {
-            traj[seg].gh_follow->preallocated_result_->error_code =
-              control_msgs::FollowJointTrajectoryResult::PATH_TOLERANCE_VIOLATED;
-            traj[seg].gh_follow->setAborted(traj[seg].gh_follow->preallocated_result_);
-          }
-          break;
           
-	        std::cout << "Effort Exceeded!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+          std::cout << "Effort Exceeded!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
           }
-      }
+     }
 
     // Apply the effort.  WHY IS THIS ADDITIVE?
     joints_[i]->commanded_effort_ = effort;
