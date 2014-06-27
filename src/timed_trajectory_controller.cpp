@@ -408,6 +408,13 @@ void TimedTrajectoryController::update()
       if (output_filters_[i])
 	output_filters_[i]->update(effort_unfiltered, effort);
     }
+
+    if (loop_count_ % 100 == 0)
+    {
+      std::cout << "effort for joint: " << i << " equals: " << effort <<std::endl; 
+
+    }
+
     if (proxies_[i].effort_limit_ > 0.0)
       {
 	      effort = std::max(-proxies_[i].effort_limit_, std::min(effort, proxies_[i].effort_limit_));
