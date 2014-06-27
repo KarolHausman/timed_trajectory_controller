@@ -409,12 +409,7 @@ void TimedTrajectoryController::update()
 	output_filters_[i]->update(effort_unfiltered, effort);
     }
 
-    if (loop_count_ % 100 == 0)
-    {
-      std::cout << "effort for joint: " << i << " equals: " << effort <<std::endl; 
-
-    }
-
+    // it is enough to check the effort only for the 0th joint, other joints have weird efforts
     if (i  == 0)
     {
 	  effort = std::max(-proxies_[i].effort_limit_, std::min(effort, proxies_[i].effort_limit_));
@@ -423,9 +418,6 @@ void TimedTrajectoryController::update()
           bool effort_exceeded = true;
           effort_pub_->msg_.data = effort_exceeded;
           effort_pub_->unlockAndPublish();
-
-          
-          std::cout << "Effort Exceeded!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
           }
      }
 
