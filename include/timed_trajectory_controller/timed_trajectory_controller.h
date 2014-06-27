@@ -60,6 +60,7 @@
 #include <pr2_controllers_msgs/JointTrajectoryControllerState.h>
 #include <pr2_controllers_msgs/JointTrajectoryAction.h>
 #include <std_msgs/Int32.h>
+#include <std_msgs/Bool.h>
 
 
 namespace controller {
@@ -217,6 +218,7 @@ private:
     realtime_tools::RealtimePublisher<
       pr2_controllers_msgs::JointTrajectoryControllerState> > controller_state_publisher_;
   boost::scoped_ptr<realtime_tools::RealtimePublisher<std_msgs::Int32> > time_pub_;
+  boost::scoped_ptr<realtime_tools::RealtimePublisher<std_msgs::Bool> > effort_pub_;
     
 
   boost::scoped_ptr<JTAS> action_server_;

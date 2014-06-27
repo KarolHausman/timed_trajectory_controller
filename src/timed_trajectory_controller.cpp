@@ -299,6 +299,8 @@ bool TimedTrajectoryController::init(pr2_mechanism_model::RobotState *robot, ros
   
   time_pub_.reset(new realtime_tools::RealtimePublisher<std_msgs::Int32>(node_, "current_segment", 1));
 
+  effort_pub_.reset(new realtime_tools::RealtimePublisher<std_msgs::Bool>(node_, "effort_exceeded", 1));
+
   action_server_.reset(new JTAS(node_, "joint_trajectory_action",
                                 boost::bind(&TimedTrajectoryController::goalCB, this, _1),
                                 boost::bind(&TimedTrajectoryController::cancelCB, this, _1),
@@ -408,10 +410,15 @@ void TimedTrajectoryController::update()
     }
     if (proxies_[i].effort_limit_ > 0.0)
       {
-	//std::cout << "EFFORT LIMIT: " << proxies_[i].effort_limit_ << " FOR JOINT NUMBER: " << i << std::endl;
-	effort = std::max(-proxies_[i].effort_limit_, std::min(effort, proxies_[i].effort_limit_));
-	if (effort >= proxies_[i].effort_limit_)
-	  std::cout << "Effort Excided!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+	      effort = std::max(-proxies_[i].effort_limit_, std::min(effort, proxies_[i].effort_limit_));
+	      if (effort >= proxies_[i].effort_limit_)
+          {
+          bool effort_exceeded = true;
+          effort_pub_->msg_.data = effort_exceeded;
+          effort_pub_->unlockAndPublish();
+          
+	        std::cout << "Effort Exceeded!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << std::endl;
+          }
       }
 
     // Apply the effort.  WHY IS THIS ADDITIVE?
