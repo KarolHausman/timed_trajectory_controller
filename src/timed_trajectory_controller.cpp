@@ -413,6 +413,7 @@ void TimedTrajectoryController::update()
     if (i  == 0)
     {
     double exceeded_effort = effort;
+    ROS_INFO("effort in 0th joint before: %f", exceeded_effort);
 	  effort = std::max(-proxies_[i].effort_limit_, std::min(effort, proxies_[i].effort_limit_));
 	  if ((effort == proxies_[i].effort_limit_) || (effort == -proxies_[i].effort_limit_))
           {
