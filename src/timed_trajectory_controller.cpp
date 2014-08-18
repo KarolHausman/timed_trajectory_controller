@@ -412,10 +412,11 @@ void TimedTrajectoryController::update()
     // it is enough to check the effort only for the 0th joint, other joints have weird efforts
     if (i  == 0)
     {
-    ROS_ERROR("effort in 0th joint: %f", effort);
+    double exceeded_effort = effort;
 	  effort = std::max(-proxies_[i].effort_limit_, std::min(effort, proxies_[i].effort_limit_));
 	  if ((effort == proxies_[i].effort_limit_) || (effort == -proxies_[i].effort_limit_))
           {
+          ROS_ERROR("effort in 0th joint: %f", exceeded_effort);
           bool effort_exceeded = true;
           effort_pub_->msg_.data = effort_exceeded;
           effort_pub_->unlockAndPublish();
